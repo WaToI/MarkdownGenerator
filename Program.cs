@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MarkdownWikiGenerator
+namespace MarkdownGenerator
 {
     class Program
     {
@@ -14,7 +14,7 @@ namespace MarkdownWikiGenerator
         static void Main(string[] args)
         {
             // put dll & xml on same diretory.
-            var target = "UniRx.dll"; // :)
+            var target = "";//UniRx.dll"; // :)
             string dest = "md";
             if (args.Length == 1)
             {
@@ -25,7 +25,20 @@ namespace MarkdownWikiGenerator
                 target = args[0];
                 dest = args[1];
             }
+            
+            if(string.IsNullOrEmpty(target)){
+            	Console.WriteLine("no args");
+            	return;
+            }
 
+            try{
+            	generate(target, dest);
+            }catch(Exception ex){
+            	Console.WriteLine($"{ex.Message}\n{ex.StackTrace}");
+            }
+        }
+        
+        static void generate(string target, string dest){
             var types = MarkdownGenerator.Load(target);
 
             // Home Markdown Builder

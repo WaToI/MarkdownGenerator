@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
-namespace MarkdownWikiGenerator
+namespace MarkdownGenerator
 {
     public class MarkdownBuilder
     {
@@ -66,6 +68,7 @@ namespace MarkdownWikiGenerator
             sb.Append(text);
             sb.Append("]");
             sb.Append("(");
+            sb.Append(config.Default.wikiRoot);
             sb.Append(url);
             sb.Append(")");
         }
@@ -138,7 +141,13 @@ namespace MarkdownWikiGenerator
 
         public override string ToString()
         {
-            return sb.ToString();
+        	if(string.IsNullOrEmpty(config.Default.wikiRoot)){
+        		return sb.ToString();
+        	}
+        	else //for gogs
+        	{
+        		return sb.ToString().Replace($"| {Environment.NewLine}", $"|{Environment.NewLine}");
+        	}
         }
     }
 }
